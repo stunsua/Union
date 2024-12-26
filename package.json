@@ -1,6 +1,6 @@
 {
   "name": "basic-example",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple example using Chemical.",
   "main": "index.js",
   "type": "module",
@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/chemicaljs/basic-example#readme",
   "dependencies": {
-    "chemicaljs": "^1.7.3",
-    "express": "^4.19.2"
+    "chemicaljs": "^2.6.2",
+    "express": "^4.21.2"
   }
 }
