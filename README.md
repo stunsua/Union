@@ -1,4 +1,4 @@
-# Basic Example
+# Union
 A simple example using Chemical.
 
 ## Setup
@@ -13,4 +13,4 @@ Next, run `npm install` to install dependencies.
 Finally run `npm start` to start the app on `localhost:3000`.
 
 ## License
-Basic Example uses the AGPL 3.0 license.
+Union uses the AGPL 3.0 license.
