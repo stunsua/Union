@@ -43,6 +43,16 @@
             z-index: 10;
         }
         
+        .fraction {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 24px;
+            color: var(--text-green);
+            opacity: 0.8;
+            z-index: 5;
+        }
+        
         h1 {
             margin-top: 40px;
             font-size: 2.8rem;
@@ -175,6 +185,11 @@
     </style>
 </head>
 <body>
+    <div class="fraction">
+        <span style="font-size:0.6em; vertical-align: top;">1</span>
+        <span style="font-size:0.6em; vertical-align: bottom;">2</span>
+    </div>
+    
     <div class="particles" id="particles"></div>
     <h1 class="logo">UNION</h1>
     <div class="search-container">
@@ -189,78 +204,67 @@
         Join Discord
     </button>
 
-   <script>
-    const search = document.getElementById("search");
-    const particles = document.getElementById("particles");
-    const discordBtn = document.getElementById("discordBtn");
+    <script>
+        const search = document.getElementById("search");
+        const particles = document.getElementById("particles");
+        const discordBtn = document.getElementById("discordBtn");
 
-    setTimeout(() => {
-        discordBtn.classList.add("visible");
-    }, 1000);
+        setTimeout(() => {
+            discordBtn.classList.add("visible");
+        }, 1000);
 
-    discordBtn.addEventListener("click", () => {
-        window.location.href = "https://discord.gg/PK6uRNmAmx";
-    });
+        discordBtn.addEventListener("click", () => {
+            window.location.href = "https://discord.gg/PK6uRNmAmx";
+        });
 
-    search.addEventListener("keydown", async function(e) {
-        if (e.key === "Enter" && chemical.loaded && e.target.value) {
-            let input = e.target.value.trim();
-
-            // If no protocol, decide if it's a domain or search
-            if (!/^https?:\/\//i.test(input)) {
-                if (/^[\w.-]+\.[a-z]{2,}$/i.test(input)) {
-                    input = "https://" + input;
-                } else {
-                    input = "https://www.google.com/search?q=" + encodeURIComponent(input);
-                }
+        search.addEventListener("keydown", async function(e) {
+            if (e.key === "Enter" && chemical.loaded && e.target.value) {
+                search.disabled = true;
+                search.style.borderColor = "var(--light-green)";
+                search.style.background = "var(--dark-green)";
+                search.placeholder = "Processing...";
+                
+                setTimeout(async () => {
+                    window.location = await chemical.encode(e.target.value);
+                }, 300);
             }
+        });
 
-            search.disabled = true;
-            search.style.borderColor = "var(--light-green)";
-            search.style.background = "var(--dark-green)";
-            search.placeholder = "Processing...";
+        search.addEventListener("focus", () => {
+            search.placeholder = "";
+        });
 
-            setTimeout(async () => {
-                window.location = await chemical.encode(input);
-            }, 300);
-        }
-    });
+        search.addEventListener("blur", () => {
+            if (!search.value) {
+                search.placeholder = "Enter URL";
+            }
+        });
 
-    search.addEventListener("focus", () => {
-        search.placeholder = "";
-    });
-
-    search.addEventListener("blur", () => {
-        if (!search.value) {
-            search.placeholder = "Enter URL";
-        }
-    });
-
-    function createParticles() {
-        const count = Math.floor(window.innerWidth / 20);
-        particles.innerHTML = '';
-        
-        for (let i = 0; i < count; i++) {
-            const particle = document.createElement("div");
-            particle.style.position = "absolute";
-            particle.style.width = Math.random() * 3 + 1 + "px";
-            particle.style.height = particle.style.width;
-            particle.style.backgroundColor = "var(--text-green)";
-            particle.style.borderRadius = "50%";
-            particle.style.left = Math.random() * 100 + "%";
-            particle.style.top = Math.random() * 100 + "%";
-            particle.style.opacity = Math.random() * 0.5 + 0.1;
+        function createParticles() {
+            const count = Math.floor(window.innerWidth / 20);
+            particles.innerHTML = '';
             
-            const duration = Math.random() * 20 + 10;
-            const delay = Math.random() * 5;
-            particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
-            
-            particles.appendChild(particle);
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement("div");
+                particle.style.position = "absolute";
+                particle.style.width = Math.random() * 3 + 1 + "px";
+                particle.style.height = particle.style.width;
+                particle.style.backgroundColor = "var(--text-green)";
+                particle.style.borderRadius = "50%";
+                particle.style.left = Math.random() * 100 + "%";
+                particle.style.top = Math.random() * 100 + "%";
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+                
+                particles.appendChild(particle);
+            }
         }
-    }
 
-    window.addEventListener("resize", createParticles);
-    createParticles();
-</script>
+        window.addEventListener("resize", createParticles);
+        createParticles();
+    </script>
 </body>
 </html>
