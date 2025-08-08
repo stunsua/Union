@@ -1,23 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Chemical Example</title>
-		<script src="/chemical.js"></script>
-	</head>
-	<body>
-		<h1>Chemical Example</h1>
-		<input id="search" placeholder="Enter URL" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Union</title>
+    <script src="/chemical.js"></script>
+    <style>
+        :root {
+            --dark-green: #0a2e0a;
+            --medium-green: #1a4a1a;
+            --light-green: #2d6b2d;
+            --text-green: #4caf50;
+            --black: #121212;
+            --dark-gray: #1e1e1e;
+            --medium-gray: #2a2a2a;
+            --light-gray: #3a3a3a;
+        }
+        
+        body {
+            background-color: var(--black);
+            color: var(--text-green);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--dark-green), var(--light-green), var(--dark-green));
+            z-index: 10;
+        }
+        
+        h1 {
+            margin-top: 40px;
+            font-size: 2.8rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+            position: relative;
+        }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: var(--light-green);
+        }
+        
+        .search-container {
+            margin-top: 50px;
+            width: 80%;
+            max-width: 600px;
+            position: relative;
+        }
+        
+        #search {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 1.1rem;
+            background-color: var(--dark-gray);
+            border: 1px solid var(--medium-gray);
+            border-radius: 6px;
+            color: var(--text-green);
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        #search:focus {
+            border-color: var(--light-green);
+            box-shadow: 0 0 0 2px rgba(44, 107, 45, 0.3);
+            background-color: var(--medium-gray);
+        }
+        
+        #search::placeholder {
+            color: #5a5a5a;
+        }
+        
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .logo {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <h1 class="logo">UNION</h1>
+    <div class="search-container">
+        <input id="search" type="text" placeholder="Enter URL" autocomplete="off" spellcheck="false" />
+    </div>
 
-		<script>
-			const search = document.getElementById("search");
+    <script>
+        const search = document.getElementById("search");
+        const particles = document.getElementById("particles");
 
-			search.addEventListener("keydown", async function (e) {
-				if (e.key == "Enter" && chemical.loaded && e.target.value) {
-					window.location = await chemical.encode(e.target.value);
-				}
-			});
-		</script>
-	</body>
+        search.addEventListener("keydown", async function(e) {
+            if (e.key === "Enter" && chemical.loaded && e.target.value) {
+                search.disabled = true;
+                search.style.borderColor = "var(--light-green)";
+                search.style.background = "var(--dark-green)";
+                search.placeholder = "Processing...";
+                
+                setTimeout(async () => {
+                    window.location = await chemical.encode(e.target.value);
+                }, 300);
+            }
+        });
+
+        search.addEventListener("focus", () => {
+            search.placeholder = "";
+        });
+
+        search.addEventListener("blur", () => {
+            if (!search.value) {
+                search.placeholder = "Enter URL";
+            }
+        });
+
+        function createParticles() {
+            const count = Math.floor(window.innerWidth / 20);
+            particles.innerHTML = '';
+            
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement("div");
+                particle.style.position = "absolute";
+                particle.style.width = Math.random() * 3 + 1 + "px";
+                particle.style.height = particle.style.width;
+                particle.style.backgroundColor = "var(--text-green)";
+                particle.style.borderRadius = "50%";
+                particle.style.left = Math.random() * 100 + "%";
+                particle.style.top = Math.random() * 100 + "%";
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+                
+                particles.appendChild(particle);
+            }
+        }
+
+        window.addEventListener("resize", createParticles);
+        createParticles();
+    </script>
+</body>
 </html>
