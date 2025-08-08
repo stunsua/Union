@@ -66,6 +66,7 @@
             width: 80%;
             max-width: 600px;
             position: relative;
+            flex-grow: 1;
         }
         
         #search {
@@ -109,6 +110,31 @@
         .logo {
             animation: float 6s ease-in-out infinite;
         }
+        
+        .credit {
+            margin: 20px 0;
+            font-size: 0.9rem;
+            color: var(--light-gray);
+            letter-spacing: 0.5px;
+            position: relative;
+            padding-top: 10px;
+        }
+        
+        .credit::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 1px;
+            background: var(--medium-gray);
+        }
+        
+        .credit span {
+            color: var(--text-green);
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -117,6 +143,7 @@
     <div class="search-container">
         <input id="search" type="text" placeholder="Enter URL" autocomplete="off" spellcheck="false" />
     </div>
+    <div class="credit">made by <span>Stunsua</span></div>
 
     <script>
         const search = document.getElementById("search");
