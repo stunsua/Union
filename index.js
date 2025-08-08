@@ -16,6 +16,6 @@ app.use((req, res) => {
     res.send("404 Error");
 });
 
-listen(port, () => {
+listen(port, "0.0.0.0", () => {
     console.log(`Basic example listening on port ${port}`);
 });
